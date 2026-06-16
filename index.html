@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MIRASTYLE | Люстры и освещение</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#000000", "on-primary": "#ffffff", "secondary": "#5e5e5e",
+        "surface": "#f9f9f9", "surface-container-low": "#f3f3f4", "surface-container": "#eeeeee",
+        "surface-container-high": "#e8e8e8", "surface-container-highest": "#e2e2e2",
+        "surface-container-lowest": "#ffffff", "on-surface": "#1a1c1c",
+        "outline-variant": "#cfc4c5", "outline": "#7e7576", "error": "#ba1a1a", "on-error": "#ffffff",
+      },
+      spacing: {
+        "stack-xl": "120px", "stack-lg": "80px", "stack-md": "40px",
+        "margin-desktop": "64px", "margin-mobile": "16px", "container-max": "1440px", "gutter": "24px",
+      },
+      fontFamily: { "headline": ["Hanken Grotesk"], "body": ["Inter"], "label": ["Hanken Grotesk"] },
+      fontSize: {
+        "display": ["72px", { lineHeight: "80px", letterSpacing: "-0.04em", fontWeight: "700" }],
+        "headline-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "500" }],
+        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "500" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "600" }],
+      },
+      maxWidth: { "container-max": "1440px" },
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24; vertical-align:middle; }
+  .reveal { opacity:0; transform:translateY(28px); transition:all 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.active { opacity:1; transform:translateY(0); }
+  @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,0,0,.3)} 70%{transform:scale(1.1);box-shadow:0 0 0 10px rgba(0,0,0,0)} }
+  .hotspot-pulse { animation:pulse 2s infinite; }
+
+  @keyframes scrollLeft  { from{transform:translateX(0)}    to{transform:translateX(-50%)} }
+  @keyframes scrollRight { from{transform:translateX(-50%)} to{transform:translateX(0)}    }
+  .marquee-track { display:flex; width:max-content; }
+  .marquee-track--left  { animation:scrollLeft  30s linear infinite; }
+  .marquee-track--right { animation:scrollRight 35s linear infinite; }
+  .marquee-outer:hover .marquee-track { animation-play-state:paused; }
+  .marquee-outer {
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0%,black 4%,black 96%,transparent 100%);
+  }
+
+  #hero-eyebrow, #hero-title, #hero-sub, #hero-btns { transition: opacity 0.6s ease; }
+  #hero-bg-img { transition: opacity 1.2s ease; }
+
+  /* ── CUSTOM CURSOR ── */
+  body { cursor: none !important; }
+  a, button { cursor: none !important; }
+  #cur-dot {
+    position:fixed; width:5px; height:5px;
+    background:#000; border-radius:50%;
+    pointer-events:none; z-index:99999;
+    left:0; top:0; will-change:transform;
+  }
+  #cur-circle {
+    position:fixed; width:32px; height:32px;
+    border:1px solid rgba(0,0,0,0.6); border-radius:50%;
+    pointer-events:none; z-index:99998;
+    left:0; top:0; will-change:transform;
+    transition:width 0.3s,height 0.3s,margin 0.3s,border-color 0.3s;
+  }
+  /* ── MASK REVEAL ── */
+  .mask-reveal { overflow:hidden; display:block; }
+  .mask-reveal-inner {
+    transform:translateY(100%);
+    transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    display:block;
+  }
+  .mask-reveal.visible .mask-reveal-inner { transform:translateY(0); }
+  /* ── SMOOTH SCROLL ── */
+  html { scroll-behavior:smooth; }
+
+  /* ── HOTSPOT TOOLTIP ── */
+  .hotspot-container { position: relative; }
+  .hotspot-tooltip {
+    position: absolute;
+    top: calc(100% + 16px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    width: 220px;
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    z-index: 20;
+  }
+  .hotspot-container:hover .hotspot-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden">
+<div id="cur-dot"></div>
+<div id="cur-circle"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 transition-colors duration-500">
+  <div class="relative flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+    <nav class="hidden lg:flex gap-6">
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="catalog.html">Каталог</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="contacts.html">О компании</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="delivery.html">Доставка и оплата</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="contacts.html">Контакты</a>
+    </nav>
+    <a class="absolute left-1/2 -translate-x-1/2 font-headline text-[22px] font-bold tracking-tighter text-primary" href="index.html">MIRASTYLE</a>
+    <div class="flex items-center gap-5">
+      <div class="relative flex items-center" id="hdr-search-box">
+        <input id="hdr-search" type="text" placeholder="Поиск..."
+          class="transition-all duration-300 bg-surface-container-low border-none rounded-full font-label text-[11px] focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-outline"
+          style="max-width:0;width:160px;padding:6px 0;opacity:0;overflow:hidden"/>
+        <button onclick="toggleSearch()" class="hover:opacity-70 transition-opacity flex-shrink-0">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+      </div>
+      <a href="favorites.html" class="hover:opacity-70 transition-opacity"><span class="material-symbols-outlined">favorite</span></a>
+      <a href="#" class="hover:opacity-70 transition-opacity"><span class="material-symbols-outlined">person</span></a>
+      <a href="cart.html" class="relative hover:opacity-70 transition-opacity"><span class="material-symbols-outlined">shopping_basket</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="relative h-[900px] w-full overflow-hidden flex items-center">
+  <img id="hero-bg-img" src="img/hero1.png" alt="" class="absolute inset-0 w-full h-full object-cover z-0" style="transition: opacity 0.5s ease"/>
+  <div class="absolute inset-0 bg-black/40 z-0"></div>
+  <canvas id="dust" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;"></canvas>
+  <div class="relative z-10 px-margin-desktop max-w-container-max mx-auto w-full">
+    <div id="hero-content" class="max-w-2xl text-white">
+      <p id="hero-eyebrow" class="font-label text-label-caps text-white/70 mb-6 tracking-[0.2em]" style="opacity:0"></p>
+      <h1 id="hero-title" class="font-headline text-[clamp(40px,6vw,72px)] leading-tight font-medium text-white mb-8" style="opacity:0"></h1>
+      <p id="hero-sub" class="font-body text-body-lg text-white/70 mb-10 max-w-lg" style="opacity:0"></p>
+      <div id="hero-btns" class="flex gap-4 flex-wrap" style="opacity:0">
+        <a id="hero-btn1" href="catalog.html" class="bg-white text-primary px-10 py-4 font-label text-label-caps hover:bg-primary hover:text-white transition-all duration-300 flex items-center gap-3">
+          СМОТРЕТЬ КАТАЛОГ <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+        <a id="hero-btn2" href="contacts.html" class="border border-white/50 text-white px-10 py-4 font-label text-label-caps hover:bg-white/10 transition-all duration-300"></a>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-10 right-[64px] flex gap-3 z-10" style="cursor:pointer">
+    <span class="hero-dot w-2 h-2 rounded-full border border-white bg-white transition-all duration-300"></span>
+    <span class="hero-dot w-2 h-2 rounded-full border border-white/30 bg-white/30 transition-all duration-300"></span>
+    <span class="hero-dot w-2 h-2 rounded-full border border-white/30 bg-white/30 transition-all duration-300"></span>
+  </div>
+</section>
+<script>
+  (function() {
+    const heroSlides = [
+      {
+        img: 'img/hero1.png',
+        eyebrow: 'НОВАЯ КОЛЛЕКЦИЯ 2025',
+        title: 'Свет, который<br/>создаёт атмосферу',
+        sub: 'Декоративные люстры и светильники для изысканных интерьеров',
+        btn1: 'СМОТРЕТЬ КАТАЛОГ', btn1href: 'catalog.html',
+        btn2: 'КОНТАКТЫ',         btn2href: 'contacts.html'
+      },
+      {
+        img: 'img/hero2.png',
+        eyebrow: 'ЭКСКЛЮЗИВНЫЙ ДИЗАЙН',
+        title: 'Люстры, которые<br/>меняют пространство',
+        sub: 'Для любого интерьера и стиля',
+        btn1: 'СМОТРЕТЬ КАТАЛОГ', btn1href: 'catalog.html',
+        btn2: 'О КОМПАНИИ',       btn2href: 'contacts.html'
+      },
+      {
+        img: 'img/hero3.png',
+        eyebrow: 'ПРЕМИУМ КАЧЕСТВО',
+        title: 'Освещение<br/>вашей мечты',
+        sub: 'Бесплатная консультация дизайнера',
+        btn1: 'ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ', btn1href: 'contacts.html',
+        btn2: 'КОНТАКТЫ',              btn2href: 'contacts.html'
+      }
+    ];
+
+    let heroCurrentSlide = 0;
+    let heroInterval;
+    let heroAnimating = false;
+
+    const heroImg     = document.getElementById('hero-bg-img');
+    const heroEyebrow = document.getElementById('hero-eyebrow');
+    const heroTitle   = document.getElementById('hero-title');
+    const heroSub     = document.getElementById('hero-sub');
+    const heroBtns    = document.getElementById('hero-btns');
+    const heroBtn1    = document.getElementById('hero-btn1');
+    const heroBtn2    = document.getElementById('hero-btn2');
+    const heroDots    = document.querySelectorAll('.hero-dot');
+
+    function goToHeroSlide(index) {
+      if (heroAnimating) return;
+      heroAnimating = true;
+      var slide = heroSlides[index];
+
+      heroEyebrow.style.opacity = '0';
+      heroTitle.style.opacity   = '0';
+      heroSub.style.opacity     = '0';
+      heroBtns.style.opacity    = '0';
+      heroImg.style.opacity     = '0';
+
+      setTimeout(function() {
+        heroImg.src             = slide.img;
+        heroEyebrow.textContent = slide.eyebrow;
+        heroTitle.innerHTML     = slide.title;
+        heroSub.textContent     = slide.sub;
+        heroBtn1.innerHTML      = slide.btn1 + '<span class="material-symbols-outlined" style="font-size:18px;margin-left:12px">arrow_forward</span>';
+        heroBtn1.href           = slide.btn1href;
+        heroBtn2.textContent    = slide.btn2;
+        heroBtn2.href           = slide.btn2href;
+
+        heroDots.forEach(function(d, i) {
+          d.classList.toggle('bg-white',     i === index);
+          d.classList.toggle('bg-white/30',  i !== index);
+          d.classList.toggle('border-white',     i === index);
+          d.classList.toggle('border-white/30',  i !== index);
+        });
+
+        heroCurrentSlide = index;
+        heroAnimating    = false;
+
+        setTimeout(function() { heroImg.style.opacity     = '1'; }, 50);
+        setTimeout(function() { heroEyebrow.style.opacity = '1'; }, 200);
+        setTimeout(function() { heroTitle.style.opacity   = '1'; }, 350);
+        setTimeout(function() { heroSub.style.opacity     = '1'; }, 500);
+        setTimeout(function() { heroBtns.style.opacity    = '1'; }, 650);
+      }, 700);
+    }
+
+    function nextHeroSlide() {
+      goToHeroSlide((heroCurrentSlide + 1) % heroSlides.length);
+    }
+
+    heroDots.forEach(function(dot, i) {
+      dot.addEventListener('click', function() {
+        if (i === heroCurrentSlide) return;
+        clearInterval(heroInterval);
+        goToHeroSlide(i);
+        heroInterval = setInterval(nextHeroSlide, 6000);
+      });
+    });
+
+    heroInterval = setInterval(nextHeroSlide, 6000);
+
+    // Инициализация первого слайда
+    var s = heroSlides[0];
+    heroEyebrow.textContent = s.eyebrow;
+    heroTitle.innerHTML     = s.title;
+    heroSub.textContent     = s.sub;
+    heroBtn1.innerHTML      = s.btn1 + '<span class="material-symbols-outlined" style="font-size:18px;margin-left:12px">arrow_forward</span>';
+    heroBtn1.href           = s.btn1href;
+    heroBtn2.textContent    = s.btn2;
+    heroBtn2.href           = s.btn2href;
+
+    setTimeout(function() { heroEyebrow.style.opacity = '1'; }, 300);
+    setTimeout(function() { heroTitle.style.opacity   = '1'; }, 500);
+    setTimeout(function() { heroSub.style.opacity     = '1'; }, 700);
+    setTimeout(function() { heroBtns.style.opacity    = '1'; }, 900);
+  })();
+</script>
+
+<!-- ═══ КАТЕГОРИИ ═══ -->
+<section class="py-stack-xl px-margin-desktop max-w-container-max mx-auto bg-white">
+  <div class="reveal mb-stack-md flex justify-between items-end">
+    <h2 class="font-headline text-headline-lg"><span class="mask-reveal"><span class="mask-reveal-inner">Категории</span></span></h2>
+    <a class="font-label text-label-caps border-b border-primary pb-1 hover:opacity-60 transition-opacity" href="catalog.html">ВСЕ КАТЕГОРИИ</a>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+    <a class="reveal group block text-center" href="catalog.html?cat=led">
+      <div class="overflow-hidden aspect-square mb-4 transition-transform duration-500 group-hover:-translate-y-2">
+        <img src="img/svetodiod.png" alt="Светодиодные" style="mix-blend-mode: multiply; width:100%; height:100%; object-fit:contain;"/>
+      </div>
+      <p class="font-label text-label-caps group-hover:text-primary transition-colors">СВЕТОДИОДНЫЕ</p>
+    </a>
+    <a class="reveal group block text-center" href="catalog.html?cat=crystal" style="transition-delay:80ms">
+      <div class="overflow-hidden aspect-square mb-4 transition-transform duration-500 group-hover:-translate-y-2">
+        <img src="img/hrustalem.png" alt="С хрусталем" style="mix-blend-mode: multiply; width:100%; height:100%; object-fit:contain;"/>
+      </div>
+      <p class="font-label text-label-caps group-hover:text-primary transition-colors">С ХРУСТАЛЕМ</p>
+    </a>
+    <a class="reveal group block text-center" href="catalog.html?cat=balls" style="transition-delay:160ms">
+      <div class="overflow-hidden aspect-square mb-4 transition-transform duration-500 group-hover:-translate-y-2">
+        <img src="img/warami.png" alt="С шарами" style="mix-blend-mode: multiply; width:100%; height:100%; object-fit:contain;"/>
+      </div>
+      <p class="font-label text-label-caps group-hover:text-primary transition-colors">С ШАРАМИ</p>
+    </a>
+    <a class="reveal group block text-center" href="catalog.html?cat=bulbs" style="transition-delay:240ms">
+      <div class="overflow-hidden aspect-square mb-4 transition-transform duration-500 group-hover:-translate-y-2">
+        <img src="img/lampo.png" alt="С лампочками" style="mix-blend-mode: multiply; width:100%; height:100%; object-fit:contain;"/>
+      </div>
+      <p class="font-label text-label-caps group-hover:text-primary transition-colors">С ЛАМПОЧКАМИ</p>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ НОВИНКИ (marquee → влево) ═══ -->
+<section class="py-stack-xl bg-surface-container-low">
+  <div class="px-margin-desktop max-w-container-max mx-auto mb-stack-md">
+    <div class="reveal flex justify-between items-end">
+      <h2 class="font-headline text-headline-lg"><span class="mask-reveal"><span class="mask-reveal-inner">Рекомендуем</span></span></h2>
+      <a class="font-label text-label-caps border-b border-primary pb-1 hover:opacity-60 transition-opacity" href="catalog.html?sort=new">СМОТРЕТЬ ВСЕ</a>
+    </div>
+  </div>
+  <div class="marquee-outer" style="overflow:hidden;padding:16px 0 16px 64px;">
+    <div class="marquee-track marquee-track--left" style="align-items:stretch;">
+      <!-- set 1 -->
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product1.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Aurora Gold"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-001</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Aurora Gold</a></h3>
+          <p class="text-[16px] font-bold">12 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product2.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Подвесной Nebula"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-014</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Подвесной Nebula</a></h3>
+          <p class="text-[16px] font-bold">8 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product3.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра Crystal"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-027</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра Crystal</a></h3>
+          <p class="text-[16px] font-bold">4 200 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product4.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Торшер Velour"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-042</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Торшер Velour</a></h3>
+          <p class="text-[16px] font-bold">18 500 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product5.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Milano"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-056</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Milano</a></h3>
+          <p class="text-[16px] font-bold">24 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/bra.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-088</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра настенное Gold</a></h3>
+          <p class="text-[16px] font-bold">5 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <!-- set 2 -->
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product1.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Aurora Gold"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-001</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Aurora Gold</a></h3>
+          <p class="text-[16px] font-bold">12 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product2.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Подвесной Nebula"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-014</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Подвесной Nebula</a></h3>
+          <p class="text-[16px] font-bold">8 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product3.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра Crystal"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-027</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра Crystal</a></h3>
+          <p class="text-[16px] font-bold">4 200 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product4.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Торшер Velour"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-042</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Торшер Velour</a></h3>
+          <p class="text-[16px] font-bold">18 500 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product5.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Milano"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-056</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Milano</a></h3>
+          <p class="text-[16px] font-bold">24 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/bra.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">NEW</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-088</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра настенное Gold</a></h3>
+          <p class="text-[16px] font-bold">5 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ПОПУЛЯРНЫЕ ПОЗИЦИИ (marquee ← вправо) ═══ -->
+<section class="py-stack-xl overflow-hidden">
+  <div class="px-margin-desktop max-w-container-max mx-auto mb-stack-md">
+    <div class="reveal flex justify-between items-end">
+      <h2 class="font-headline text-headline-lg"><span class="mask-reveal"><span class="mask-reveal-inner">Лучшие предложения</span></span></h2>
+      <a class="font-label text-label-caps border-b border-primary pb-1 hover:opacity-60 transition-opacity" href="catalog.html">СМОТРЕТЬ ВСЕ</a>
+    </div>
+  </div>
+  <div class="marquee-outer" style="overflow:hidden;padding:16px 0 16px 64px;">
+    <div class="marquee-track marquee-track--right" style="align-items:stretch;">
+      <!-- set 1 -->
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product6.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Grande"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-115</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Grande</a></h3>
+          <p class="text-[16px] font-bold">34 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product7.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Подвесной Ring"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-128</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Подвесной Ring</a></h3>
+          <p class="text-[16px] font-bold">15 600 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product8.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра Marble"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-143</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра Marble</a></h3>
+          <p class="text-[16px] font-bold">6 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product9.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Торшер Arch"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-157</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Торшер Arch</a></h3>
+          <p class="text-[16px] font-bold">22 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product10.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Светильник Copper"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-186</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Светильник Copper</a></h3>
+          <p class="text-[16px] font-bold">9 800 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+
+      <!-- set 2 -->
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product6.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Люстра Grande"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-115</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Люстра Grande</a></h3>
+          <p class="text-[16px] font-bold">34 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product7.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Подвесной Ring"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-128</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Подвесной Ring</a></h3>
+          <p class="text-[16px] font-bold">15 600 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product8.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Бра Marble"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-143</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Бра Marble</a></h3>
+          <p class="text-[16px] font-bold">6 900 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product9.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Торшер Arch"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-157</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Торшер Arch</a></h3>
+          <p class="text-[16px] font-bold">22 400 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+      <div class="group flex-shrink-0 w-[260px] rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden" style="margin-right:24px;">
+        <div class="relative overflow-hidden aspect-[3/4]">
+          <img src="img/product10.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Светильник Copper"/>
+          <div class="absolute top-3 left-3 bg-black text-white text-[10px] font-semibold tracking-widest px-3 py-1 rounded-full">HIT</div>
+          <button class="absolute top-3 right-3 bg-white/90 text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span class="material-symbols-outlined text-[18px]">favorite</span></button>
+        </div>
+        <div class="p-4">
+          <span class="text-[11px] text-gray-400 tracking-widest font-medium">АРТ. MS-186</span>
+          <h3 class="text-[15px] font-medium mt-1 mb-2 leading-tight group-hover:underline underline-offset-4"><a href="product.html">Светильник Copper</a></h3>
+          <p class="text-[16px] font-bold">9 800 ₽</p>
+          <button class="mt-3 w-full py-2.5 bg-black text-white text-[11px] font-semibold tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">В КОРЗИНУ</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTERIOR HOTSPOTS ═══ -->
+<section class="py-stack-xl bg-surface-container-low">
+  <div class="px-margin-desktop max-w-container-max mx-auto">
+    <div class="reveal mb-stack-md">
+      <h2 class="font-headline text-headline-lg"><span class="mask-reveal"><span class="mask-reveal-inner">MIRASTYLE в интерьере</span></span></h2>
+      <p class="text-secondary mt-4 max-w-lg font-body text-body-lg">Вдохновляйтесь нашими проектами и находите идеальные световые решения.</p>
+    </div>
+    <div style="position:relative">
+      <img src="img/interior.png" class="w-full h-[600px] object-cover" alt="MIRASTYLE в интерьере"/>
+
+      <!-- Люстра вверху по центру -->
+      <div class="hotspot-container" style="position:absolute; top:12%; left:50%; transform:translateX(-50%);">
+        <button style="width:32px;height:32px;background:white;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.25);cursor:none;" class="hotspot-pulse">
+          <span class="material-symbols-outlined" style="font-size:16px;color:black;">add</span>
+        </button>
+        <div class="hotspot-tooltip">
+          <div class="aspect-square rounded-xl overflow-hidden mb-3 bg-gray-50">
+            <img src="img/product2.png" class="w-full h-full object-cover" alt=""/>
+          </div>
+          <p class="text-[10px] text-gray-400 tracking-widest font-medium mb-1">ЛЮСТРА</p>
+          <p class="text-[14px] font-medium mb-2">Подвесной Nebula</p>
+          <p class="text-[16px] font-bold mb-3">8 400 ₽</p>
+          <a href="product.html" class="block w-full text-center bg-black text-white py-2 text-[11px] font-semibold tracking-widest rounded-xl hover:opacity-80 transition-opacity">СМОТРЕТЬ</a>
+        </div>
+      </div>
+
+      <!-- Бра справа на стене -->
+      <div class="hotspot-container" style="position:absolute; top:35%; right:22%;">
+        <button style="width:32px;height:32px;background:white;border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.25);cursor:none;" class="hotspot-pulse">
+          <span class="material-symbols-outlined" style="font-size:16px;color:black;">add</span>
+        </button>
+        <div class="hotspot-tooltip">
+          <div class="aspect-square rounded-xl overflow-hidden mb-3 bg-gray-50">
+            <img src="img/bra.png" class="w-full h-full object-cover" alt=""/>
+          </div>
+          <p class="text-[10px] text-gray-400 tracking-widest font-medium mb-1">НАСТЕННЫЙ СВЕТИЛЬНИК</p>
+          <p class="text-[14px] font-medium mb-2">Бра настенное Gold</p>
+          <p class="text-[16px] font-bold mb-3">5 400 ₽</p>
+          <a href="product.html" class="block w-full text-center bg-black text-white py-2 text-[11px] font-semibold tracking-widest rounded-xl hover:opacity-80 transition-opacity">СМОТРЕТЬ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ИНДИВИДУАЛЬНЫЙ ПОДБОР ═══ -->
+<section class="py-stack-xl px-margin-desktop overflow-hidden">
+  <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center">
+    <div class="reveal">
+      <h2 class="font-headline text-headline-lg mb-8"><span class="mask-reveal"><span class="mask-reveal-inner">Индивидуальный подбор</span></span></h2>
+      <p class="font-body text-body-lg text-secondary mb-12 max-w-lg">Помогаем подобрать освещение под ваш интерьер. Бесплатная консультация дизайнера, 3D-визуализация расстановки светильников, подбор по стилю и бюджету.</p>
+      <a href="contacts.html" class="border-2 border-primary text-primary px-10 py-4 font-label text-label-caps hover:bg-primary hover:text-on-primary transition-all duration-500 group flex items-center gap-4 w-fit">
+        УЗНАТЬ ПОДРОБНЕЕ <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">east</span>
+      </a>
+    </div>
+    <div class="reveal relative h-[500px] overflow-hidden" style="transition-delay:200ms">
+      <div class="absolute -bottom-10 -left-10 text-[140px] font-black text-surface-container-highest/60 z-0 select-none whitespace-nowrap pointer-events-none leading-none">ПОДБОР</div>
+      <img src="img/about.png" class="w-full h-full object-cover relative z-10 grayscale hover:grayscale-0 transition-all duration-1000" alt="О компании MIRASTYLE"/>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="bg-surface-container-lowest text-on-surface border-t border-outline-variant mt-stack-xl">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop py-stack-lg max-w-container-max mx-auto">
+    <div>
+      <a class="font-headline text-headline-md font-bold text-primary mb-6 block" href="index.html">MIRASTYLE</a>
+      <p class="text-secondary font-body text-body-md mb-8">Производитель декоративного и функционального освещения. Производитель декоративного освещения.</p>
+<div style="display:flex; gap:12px; margin-top:16px;">
+
+  <!-- Telegram -->
+  <a href="https://t.me/+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+  </a>
+
+  <!-- Viber -->
+  <a href="viber://chat?number=+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.985 0h.03C18.627 0 24 5.373 24 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 11.985 0zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm2.346 13.799c-.3.1-.617.15-.933.15-.5 0-.983-.133-1.433-.4-.25-.15-.483-.333-.7-.55-.317.317-.483.65-.483 1 0 .183.05.367.133.533.1.2.267.383.467.55.4.333.883.5 1.45.5.15 0 .3-.017.45-.05.683-.133 1.3-.483 1.85-1.067.55.617.883 1.4.883 2.25 0 .3-.05.6-.133.883-.2.65-.633 1.183-1.267 1.567-.65.383-1.4.567-2.267.567-1.767 0-3.317-.683-4.633-2.05C6.667 16.217 6 14.567 6 12.617c0-.867.133-1.683.4-2.45.617-1.767 1.8-3.15 3.533-4.1.8-.45 1.683-.683 2.617-.717.733.033 1.417.217 2.067.567 1.467.817 2.433 1.983 2.95 3.5.217.633.317 1.3.317 2 0-.683-.133-1.367-.4-2-.433-1.05-1.15-1.883-2.133-2.45-.617-.35-1.283-.533-2-.55-.733.017-1.4.2-2 .567-1.383.783-2.317 1.9-2.8 3.317-.2.6-.3 1.233-.3 1.9 0 1.55.517 2.867 1.567 3.933.933.933 2.083 1.433 3.467 1.433.583 0 1.1-.117 1.55-.35.35-.183.583-.45.717-.8.05-.15.083-.3.083-.467 0-.467-.2-.917-.583-1.35-.033.033-.067.083-.1.133-.617.717-1.383 1.1-2.283 1.167-.2.017-.417.017-.617 0-.75-.083-1.383-.4-1.9-.933-.35-.367-.533-.783-.533-1.25 0-.483.183-.917.533-1.283.4-.417.85-.633 1.35-.633.483 0 .933.2 1.35.6.05.05.117.117.183.2.067.083.15.167.233.25.217.233.45.433.683.583.317.2.65.3 1 .3.217 0 .417-.033.617-.1.583-.217 1.033-.65 1.317-1.283.25-.55.383-1.183.383-1.883v-.017c-.017-1.383-.367-2.45-1.083-3.267-.917-1.083-2.383-1.65-4.35-1.683-.083 0-.167 0-.233.017z"/>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/mdsvet__by" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  </a>
+
+</div>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">КАТАЛОГ</h4>
+      <ul class="space-y-4">
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=led">Светодиодные</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=crystal">С хрусталем</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=balls">С шарами</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=bulbs">С лампочками</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">ПОКУПАТЕЛЯМ</h4>
+      <ul class="space-y-4">
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="contacts.html">О компании</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="delivery.html">Доставка и оплата</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="contacts.html">Контакты</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="#">Возврат</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">КОНТАКТЫ</h4>
+      <ul class="space-y-3 mb-6">
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">phone</span>
+          <a href="tel:+375296225248" class="hover:text-primary transition-colors">A1: +375 29 622 52 48</a>
+        </li>
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">phone</span>
+          <a href="tel:+375336025248" class="hover:text-primary transition-colors">МТС: +375 33 602 52 48</a>
+        </li>
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">mail</span>
+          <a href="mailto:mdsvet@inbox.ru" class="hover:text-primary transition-colors">mdsvet@inbox.ru</a>
+        </li>
+      </ul>
+<div style="display:flex; gap:12px; margin-top:16px;">
+
+  <!-- Telegram -->
+  <a href="https://t.me/+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+  </a>
+
+  <!-- Viber -->
+  <a href="viber://chat?number=+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.985 0h.03C18.627 0 24 5.373 24 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 11.985 0zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm2.346 13.799c-.3.1-.617.15-.933.15-.5 0-.983-.133-1.433-.4-.25-.15-.483-.333-.7-.55-.317.317-.483.65-.483 1 0 .183.05.367.133.533.1.2.267.383.467.55.4.333.883.5 1.45.5.15 0 .3-.017.45-.05.683-.133 1.3-.483 1.85-1.067.55.617.883 1.4.883 2.25 0 .3-.05.6-.133.883-.2.65-.633 1.183-1.267 1.567-.65.383-1.4.567-2.267.567-1.767 0-3.317-.683-4.633-2.05C6.667 16.217 6 14.567 6 12.617c0-.867.133-1.683.4-2.45.617-1.767 1.8-3.15 3.533-4.1.8-.45 1.683-.683 2.617-.717.733.033 1.417.217 2.067.567 1.467.817 2.433 1.983 2.95 3.5.217.633.317 1.3.317 2 0-.683-.133-1.367-.4-2-.433-1.05-1.15-1.883-2.133-2.45-.617-.35-1.283-.533-2-.55-.733.017-1.4.2-2 .567-1.383.783-2.317 1.9-2.8 3.317-.2.6-.3 1.233-.3 1.9 0 1.55.517 2.867 1.567 3.933.933.933 2.083 1.433 3.467 1.433.583 0 1.1-.117 1.55-.35.35-.183.583-.45.717-.8.05-.15.083-.3.083-.467 0-.467-.2-.917-.583-1.35-.033.033-.067.083-.1.133-.617.717-1.383 1.1-2.283 1.167-.2.017-.417.017-.617 0-.75-.083-1.383-.4-1.9-.933-.35-.367-.533-.783-.533-1.25 0-.483.183-.917.533-1.283.4-.417.85-.633 1.35-.633.483 0 .933.2 1.35.6.05.05.117.117.183.2.067.083.15.167.233.25.217.233.45.433.683.583.317.2.65.3 1 .3.217 0 .417-.033.617-.1.583-.217 1.033-.65 1.317-1.283.25-.55.383-1.183.383-1.883v-.017c-.017-1.383-.367-2.45-1.083-3.267-.917-1.083-2.383-1.65-4.35-1.683-.083 0-.167 0-.233.017z"/>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/mdsvet__by" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  </a>
+
+</div>
+    </div>
+  </div>
+  <div class="px-margin-desktop py-8 border-t border-outline-variant/30 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="font-label text-label-caps text-secondary">© 2025 MIRASTYLE. Все права защищены.</span>
+    <div class="flex gap-8">
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="#">Политика конфиденциальности</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="#">Условия использования</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  function toggleSearch() {
+    var inp = document.getElementById('hdr-search');
+    var open = parseFloat(inp.style.maxWidth) > 0;
+    if (open) { inp.style.maxWidth = '0'; inp.style.padding = '6px 0'; inp.style.opacity = '0'; }
+    else { inp.style.maxWidth = '160px'; inp.style.padding = '6px 1rem'; inp.style.opacity = '1'; setTimeout(function() { inp.focus(); }, 50); }
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var inp = document.getElementById('hdr-search');
+    if (!inp) return;
+    inp.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && this.value.trim()) window.location.href = 'catalog.html?search=' + encodeURIComponent(this.value.trim());
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#hdr-search-box')) { inp.style.maxWidth = '0'; inp.style.padding = '6px 0'; inp.style.opacity = '0'; }
+    });
+  });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── 1. CUSTOM CURSOR ── */
+  const curDot    = document.getElementById('cur-dot');
+  const curCircle = document.getElementById('cur-circle');
+  let mx = 0, my = 0, cx = 0, cy = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    curDot.style.transform = `translate(${mx - 2.5}px, ${my - 2.5}px)`;
+  });
+
+  (function moveCursor() {
+    cx += (mx - cx) * 0.15;
+    cy += (my - cy) * 0.15;
+    curCircle.style.transform = `translate(${cx - 16}px, ${cy - 16}px)`;
+    requestAnimationFrame(moveCursor);
+  })();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      curCircle.style.width       = '50px';
+      curCircle.style.height      = '50px';
+      curCircle.style.marginLeft  = '-9px';
+      curCircle.style.marginTop   = '-9px';
+      curCircle.style.borderColor = 'rgba(0,0,0,1)';
+    });
+    el.addEventListener('mouseleave', () => {
+      curCircle.style.width       = '32px';
+      curCircle.style.height      = '32px';
+      curCircle.style.marginLeft  = '0px';
+      curCircle.style.marginTop   = '0px';
+      curCircle.style.borderColor = 'rgba(0,0,0,0.6)';
+    });
+  });
+
+  /* ── 2. TILT EFFECT ── */
+  document.querySelectorAll('.group').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const rotX = ((e.clientY - r.top)  / r.height - 0.5) * -16;
+      const rotY = ((e.clientX - r.left) / r.width  - 0.5) *  16;
+      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+      card.style.transition = 'transform 0.1s ease';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      card.style.transition = 'transform 0.5s ease';
+    });
+  });
+
+  /* ── 3. MAGNETIC BUTTONS ── */
+  document.querySelectorAll('a.bg-white, a.border, button.bg-primary, a.bg-primary').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width  / 2;
+      const y = e.clientY - r.top  - r.height / 2;
+      btn.style.transform  = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+      btn.style.transition = 'transform 0.15s ease';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform  = 'translate(0,0)';
+      btn.style.transition = 'transform 0.5s ease';
+    });
+  });
+
+  /* ── 4. SMOOTH SCROLL for anchors ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+
+  /* ── 5. PARALLAX hero ── */
+  const heroSection = document.querySelector('section');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.pageYOffset;
+    if (heroSection) {
+      const heroImg = document.getElementById('hero-bg-img');
+      if (heroImg) heroImg.style.transform = `translateY(${scrollY * 0.3}px) scale(1.1)`;
+    }
+  }, { passive: true });
+
+  /* ── 6. MASK REVEAL observer ── */
+  const maskObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.mask-reveal').forEach(el => maskObserver.observe(el));
+
+
+});
+</script>
+
+<script>
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('dust');
+  if (!canvas) return;
+  const ctx  = canvas.getContext('2d');
+  const hero = canvas.parentElement;
+  canvas.width  = hero.offsetWidth;
+  canvas.height = hero.offsetHeight;
+  window.addEventListener('resize', () => {
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+  });
+  const dots = [];
+  for (let i = 0; i < 90; i++) {
+    dots.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r:  Math.random() * 1.2 + 0.2,
+      sx: (Math.random() - 0.5) * 0.25,
+      sy: -(Math.random() * 0.4 + 0.05),
+      o:  Math.random() * 0.55 + 0.05,
+      p:  Math.random() * Math.PI * 2
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      d.p += 0.012; d.x += d.sx; d.y += d.sy;
+      if (d.y < -5)  { d.y = canvas.height + 5; d.x = Math.random() * canvas.width; }
+      if (d.x < 0)   d.x = canvas.width;
+      if (d.x > canvas.width) d.x = 0;
+      const op = d.o * (0.5 + 0.5 * Math.sin(d.p));
+      const g  = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r * 5);
+      g.addColorStop(0, `rgba(255,225,140,${op})`);
+      g.addColorStop(1, `rgba(255,200,80,0)`);
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r * 5, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,240,180,${op})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+});
+</script>
+
+</body>
+</html>

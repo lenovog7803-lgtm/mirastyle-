@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Оформление заказа — MIRASTYLE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#000000", "on-primary": "#ffffff", "secondary": "#5e5e5e",
+        "surface": "#f9f9f9", "surface-container-low": "#f3f3f4", "surface-container": "#eeeeee",
+        "surface-container-high": "#e8e8e8", "surface-container-highest": "#e2e2e2",
+        "surface-container-lowest": "#ffffff", "on-surface": "#1a1c1c",
+        "outline-variant": "#cfc4c5", "outline": "#7e7576", "error": "#ba1a1a", "on-error": "#ffffff",
+      },
+      spacing: {
+        "stack-xl": "120px", "stack-lg": "80px", "stack-md": "40px",
+        "margin-desktop": "64px", "margin-mobile": "16px", "container-max": "1440px", "gutter": "24px",
+      },
+      fontFamily: { "headline": ["Hanken Grotesk"], "body": ["Inter"], "label": ["Hanken Grotesk"] },
+      fontSize: {
+        "display": ["72px", { lineHeight: "80px", letterSpacing: "-0.04em", fontWeight: "700" }],
+        "headline-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "500" }],
+        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "500" }],
+        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "600" }],
+      },
+      maxWidth: { "container-max": "1440px" },
+    }
+  }
+}
+</script>
+<style>.material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 24; vertical-align:middle; }</style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+
+<!-- ═══ HEADER ═══ -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 transition-colors duration-500">
+  <div class="relative flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+    <!-- Left: Nav -->
+    <nav class="hidden lg:flex gap-6">
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="catalog.html">Каталог</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="contacts.html">О компании</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="delivery.html">Доставка и оплата</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="contacts.html">Контакты</a>
+    </nav>
+    <!-- Center: Logo -->
+    <a class="absolute left-1/2 -translate-x-1/2 font-headline text-[22px] font-bold tracking-tighter text-primary" href="index.html">MIRASTYLE</a>
+    <!-- Right: Icons -->
+    <div class="flex items-center gap-5">
+      <div class="relative flex items-center" id="hdr-search-box">
+        <input id="hdr-search" type="text" placeholder="Поиск..."
+          class="transition-all duration-300 bg-surface-container-low border-none rounded-full font-label text-[11px] focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-outline"
+          style="max-width:0;width:160px;padding:6px 0;opacity:0;overflow:hidden"/>
+        <button onclick="toggleSearch()" class="hover:opacity-70 transition-opacity flex-shrink-0">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+      </div>
+      <a href="favorites.html" class="hover:opacity-70 transition-opacity"><span class="material-symbols-outlined">favorite</span></a>
+      <a href="#" class="hover:opacity-70 transition-opacity"><span class="material-symbols-outlined">person</span></a>
+      <a href="cart.html" class="relative hover:opacity-70 transition-opacity">
+        <span class="material-symbols-outlined">shopping_basket</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-container-max mx-auto px-margin-desktop py-stack-lg">
+  <div class="mb-stack-md">
+    <nav class="flex font-label text-label-caps text-secondary mb-4 gap-2">
+      <a class="hover:text-primary" href="index.html">ГЛАВНАЯ</a><span>/</span>
+      <a class="hover:text-primary" href="cart.html">КОРЗИНА</a><span>/</span>
+      <span class="text-primary">ОФОРМЛЕНИЕ</span>
+    </nav>
+    <h1 class="font-headline text-headline-lg">Оформление заказа</h1>
+  </div>
+
+  <!-- Steps -->
+  <div class="flex items-center gap-4 mb-stack-md font-label text-label-caps">
+    <span class="text-primary border-b-2 border-primary pb-1">1. ДАННЫЕ</span>
+    <span class="text-outline-variant">—</span>
+    <span class="text-secondary">2. ДОСТАВКА</span>
+    <span class="text-outline-variant">—</span>
+    <span class="text-secondary">3. ОПЛАТА</span>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-stack-md">
+
+    <!-- FORM -->
+    <div class="flex-grow space-y-8">
+
+      <!-- Contact Info -->
+      <div class="border border-outline-variant/30 p-8">
+        <h2 class="font-headline text-headline-md mb-6">Контактные данные</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="font-label text-label-caps text-secondary mb-2 block">ИМЯ *</label>
+            <input class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 font-body text-body-md placeholder:text-outline" placeholder="Иван" type="text"/>
+          </div>
+          <div>
+            <label class="font-label text-label-caps text-secondary mb-2 block">ФАМИЛИЯ</label>
+            <input class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 font-body text-body-md placeholder:text-outline" placeholder="Иванов" type="text"/>
+          </div>
+          <div>
+            <label class="font-label text-label-caps text-secondary mb-2 block">ТЕЛЕФОН *</label>
+            <input class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 font-body text-body-md placeholder:text-outline" placeholder="+7 (___) ___-__-__" type="tel"/>
+          </div>
+          <div>
+            <label class="font-label text-label-caps text-secondary mb-2 block">EMAIL</label>
+            <input class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 font-body text-body-md placeholder:text-outline" placeholder="email@example.com" type="email"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery -->
+      <div class="border border-outline-variant/30 p-8">
+        <h2 class="font-headline text-headline-md mb-6">Способ доставки</h2>
+        <div class="space-y-4 mb-6">
+          <label class="flex items-start gap-4 cursor-pointer group">
+            <input type="radio" name="delivery" value="courier" class="mt-1 text-primary focus:ring-primary" checked/>
+            <div>
+              <span class="font-label text-label-caps block">КУРЬЕР ПО ГОРОДУ</span>
+              <span class="text-secondary font-body text-body-md">1–2 рабочих дня</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-4 cursor-pointer group">
+            <input type="radio" name="delivery" value="cdek" class="mt-1 text-primary focus:ring-primary"/>
+            <div>
+              <span class="font-label text-label-caps block">СДЭК</span>
+              <span class="text-secondary font-body text-body-md">3–7 рабочих дней</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-4 cursor-pointer group">
+            <input type="radio" name="delivery" value="post" class="mt-1 text-primary focus:ring-primary"/>
+            <div>
+              <span class="font-label text-label-caps block">ПОЧТА РОССИИ</span>
+              <span class="text-secondary font-body text-body-md">7–14 рабочих дней</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-4 cursor-pointer group">
+            <input type="radio" name="delivery" value="pickup" class="mt-1 text-primary focus:ring-primary"/>
+            <div>
+              <span class="font-label text-label-caps block">САМОВЫВОЗ (МОСКВА)</span>
+              <span class="text-secondary font-body text-body-md">Готовность — 1 рабочий день</span>
+            </div>
+          </label>
+        </div>
+        <div>
+          <label class="font-label text-label-caps text-secondary mb-2 block">АДРЕС ДОСТАВКИ</label>
+          <input class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 font-body text-body-md placeholder:text-outline" placeholder="Город, улица, дом, квартира" type="text"/>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="border border-outline-variant/30 p-8">
+        <h2 class="font-headline text-headline-md mb-6">Способ оплаты</h2>
+        <div class="space-y-4">
+          <label class="flex items-center gap-4 cursor-pointer">
+            <input type="radio" name="payment" value="card" class="text-primary focus:ring-primary" checked/>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">credit_card</span>
+              <span class="font-label text-label-caps">БАНКОВСКАЯ КАРТА ОНЛАЙН</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-4 cursor-pointer">
+            <input type="radio" name="payment" value="cash" class="text-primary focus:ring-primary"/>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">payments</span>
+              <span class="font-label text-label-caps">НАЛИЧНЫМИ ПРИ ПОЛУЧЕНИИ</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-4 cursor-pointer">
+            <input type="radio" name="payment" value="transfer" class="text-primary focus:ring-primary"/>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined">account_balance</span>
+              <span class="font-label text-label-caps">ПЕРЕВОД НА СЧЁТ</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Comment -->
+      <div class="border border-outline-variant/30 p-8">
+        <h2 class="font-headline text-headline-md mb-6">Комментарий к заказу</h2>
+        <textarea class="w-full bg-transparent border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-3 resize-none font-body text-body-md placeholder:text-outline" placeholder="Дополнительная информация, пожелания..." rows="3"></textarea>
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="w-full lg:w-80 flex-shrink-0">
+      <div class="bg-surface-container-lowest border border-outline-variant/30 p-8 sticky top-24">
+        <h2 class="font-headline text-headline-md mb-6">Ваш заказ</h2>
+        <div class="space-y-4 mb-6 font-body text-body-md text-secondary">
+          <!-- Товары в заказе (добавить через Claude Code) -->
+          <p class="text-center py-4">[ Товары из корзины ]</p>
+        </div>
+        <div class="border-t border-outline-variant/30 pt-4 space-y-2 mb-8">
+          <div class="flex justify-between font-body text-body-md"><span class="text-secondary">Товары</span><span>0 ₽</span></div>
+          <div class="flex justify-between font-body text-body-md"><span class="text-secondary">Доставка</span><span class="text-secondary">Уточняется</span></div>
+          <div class="flex justify-between font-headline text-headline-md mt-4 pt-4 border-t border-outline-variant/30"><span>Итого</span><span>0 ₽</span></div>
+        </div>
+        <button class="w-full bg-primary text-on-primary py-5 font-label text-label-caps hover:opacity-90 transition-all active:scale-[0.98]">
+          ПОДТВЕРДИТЬ ЗАКАЗ
+        </button>
+        <p class="text-[11px] text-secondary mt-4 text-center leading-tight">
+          Нажимая кнопку, вы принимаете <a href="#" class="underline hover:text-primary">условия оферты</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="bg-surface-container-lowest text-on-surface border-t border-outline-variant mt-stack-xl">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop py-stack-lg max-w-container-max mx-auto">
+    <div>
+      <a class="font-headline text-headline-md font-bold text-primary mb-6 block" href="index.html">MIRASTYLE</a>
+      <p class="text-secondary font-body text-body-md mb-8">Производитель декоративного и функционального освещения. Более 2000 моделей в каталоге.</p>
+<div style="display:flex; gap:12px; margin-top:16px;">
+
+  <!-- Telegram -->
+  <a href="https://t.me/+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+  </a>
+
+  <!-- Viber -->
+  <a href="viber://chat?number=+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.985 0h.03C18.627 0 24 5.373 24 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 11.985 0zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm2.346 13.799c-.3.1-.617.15-.933.15-.5 0-.983-.133-1.433-.4-.25-.15-.483-.333-.7-.55-.317.317-.483.65-.483 1 0 .183.05.367.133.533.1.2.267.383.467.55.4.333.883.5 1.45.5.15 0 .3-.017.45-.05.683-.133 1.3-.483 1.85-1.067.55.617.883 1.4.883 2.25 0 .3-.05.6-.133.883-.2.65-.633 1.183-1.267 1.567-.65.383-1.4.567-2.267.567-1.767 0-3.317-.683-4.633-2.05C6.667 16.217 6 14.567 6 12.617c0-.867.133-1.683.4-2.45.617-1.767 1.8-3.15 3.533-4.1.8-.45 1.683-.683 2.617-.717.733.033 1.417.217 2.067.567 1.467.817 2.433 1.983 2.95 3.5.217.633.317 1.3.317 2 0-.683-.133-1.367-.4-2-.433-1.05-1.15-1.883-2.133-2.45-.617-.35-1.283-.533-2-.55-.733.017-1.4.2-2 .567-1.383.783-2.317 1.9-2.8 3.317-.2.6-.3 1.233-.3 1.9 0 1.55.517 2.867 1.567 3.933.933.933 2.083 1.433 3.467 1.433.583 0 1.1-.117 1.55-.35.35-.183.583-.45.717-.8.05-.15.083-.3.083-.467 0-.467-.2-.917-.583-1.35-.033.033-.067.083-.1.133-.617.717-1.383 1.1-2.283 1.167-.2.017-.417.017-.617 0-.75-.083-1.383-.4-1.9-.933-.35-.367-.533-.783-.533-1.25 0-.483.183-.917.533-1.283.4-.417.85-.633 1.35-.633.483 0 .933.2 1.35.6.05.05.117.117.183.2.067.083.15.167.233.25.217.233.45.433.683.583.317.2.65.3 1 .3.217 0 .417-.033.617-.1.583-.217 1.033-.65 1.317-1.283.25-.55.383-1.183.383-1.883v-.017c-.017-1.383-.367-2.45-1.083-3.267-.917-1.083-2.383-1.65-4.35-1.683-.083 0-.167 0-.233.017z"/>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/mdsvet__by" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  </a>
+
+</div>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">КАТАЛОГ</h4>
+      <ul class="space-y-4">
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=led">Светодиодные</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=crystal">С хрусталем</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=balls">С шарами</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="catalog.html?cat=bulbs">С лампочками</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">ПОКУПАТЕЛЯМ</h4>
+      <ul class="space-y-4">
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="contacts.html">О компании</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="delivery.html">Доставка и оплата</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="contacts.html">Контакты</a></li>
+        <li><a class="text-secondary hover:text-primary hover:underline underline-offset-4 decoration-1 transition-all font-body text-body-md" href="#">Возврат</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-label text-label-caps mb-8">КОНТАКТЫ</h4>
+      <ul class="space-y-3 mb-6">
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">phone</span>
+          <a href="tel:+375296225248" class="hover:text-primary transition-colors">A1: +375 29 622 52 48</a>
+        </li>
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">phone</span>
+          <a href="tel:+375336025248" class="hover:text-primary transition-colors">МТС: +375 33 602 52 48</a>
+        </li>
+        <li class="flex items-center gap-2 font-body text-body-md text-secondary">
+          <span class="material-symbols-outlined text-[18px]">mail</span>
+          <a href="mailto:mdsvet@inbox.ru" class="hover:text-primary transition-colors">mdsvet@inbox.ru</a>
+        </li>
+      </ul>
+<div style="display:flex; gap:12px; margin-top:16px;">
+
+  <!-- Telegram -->
+  <a href="https://t.me/+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+  </a>
+
+  <!-- Viber -->
+  <a href="viber://chat?number=+375296225248" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M11.985 0h.03C18.627 0 24 5.373 24 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 11.985 0zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm2.346 13.799c-.3.1-.617.15-.933.15-.5 0-.983-.133-1.433-.4-.25-.15-.483-.333-.7-.55-.317.317-.483.65-.483 1 0 .183.05.367.133.533.1.2.267.383.467.55.4.333.883.5 1.45.5.15 0 .3-.017.45-.05.683-.133 1.3-.483 1.85-1.067.55.617.883 1.4.883 2.25 0 .3-.05.6-.133.883-.2.65-.633 1.183-1.267 1.567-.65.383-1.4.567-2.267.567-1.767 0-3.317-.683-4.633-2.05C6.667 16.217 6 14.567 6 12.617c0-.867.133-1.683.4-2.45.617-1.767 1.8-3.15 3.533-4.1.8-.45 1.683-.683 2.617-.717.733.033 1.417.217 2.067.567 1.467.817 2.433 1.983 2.95 3.5.217.633.317 1.3.317 2 0-.683-.133-1.367-.4-2-.433-1.05-1.15-1.883-2.133-2.45-.617-.35-1.283-.533-2-.55-.733.017-1.4.2-2 .567-1.383.783-2.317 1.9-2.8 3.317-.2.6-.3 1.233-.3 1.9 0 1.55.517 2.867 1.567 3.933.933.933 2.083 1.433 3.467 1.433.583 0 1.1-.117 1.55-.35.35-.183.583-.45.717-.8.05-.15.083-.3.083-.467 0-.467-.2-.917-.583-1.35-.033.033-.067.083-.1.133-.617.717-1.383 1.1-2.283 1.167-.2.017-.417.017-.617 0-.75-.083-1.383-.4-1.9-.933-.35-.367-.533-.783-.533-1.25 0-.483.183-.917.533-1.283.4-.417.85-.633 1.35-.633.483 0 .933.2 1.35.6.05.05.117.117.183.2.067.083.15.167.233.25.217.233.45.433.683.583.317.2.65.3 1 .3.217 0 .417-.033.617-.1.583-.217 1.033-.65 1.317-1.283.25-.55.383-1.183.383-1.883v-.017c-.017-1.383-.367-2.45-1.083-3.267-.917-1.083-2.383-1.65-4.35-1.683-.083 0-.167 0-.233.017z"/>
+    </svg>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://instagram.com/mdsvet__by" target="_blank"
+     style="width:44px;height:44px;border:1px solid #cfc4c5;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;color:#1a1c1c;"
+     onmouseover="this.style.background='#000';this.style.borderColor='#000';this.style.color='#fff'"
+     onmouseout="this.style.background='transparent';this.style.borderColor='#cfc4c5';this.style.color='#1a1c1c'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  </a>
+
+</div>
+    </div>
+  </div>
+  <div class="px-margin-desktop py-8 border-t border-outline-variant/30 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="font-label text-label-caps text-secondary">© 2025 MIRASTYLE. Все права защищены.</span>
+    <div class="flex gap-8">
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="#">Политика конфиденциальности</a>
+      <a class="font-label text-label-caps text-secondary hover:text-primary transition-colors" href="#">Условия использования</a>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+function toggleSearch() {
+  var inp = document.getElementById('hdr-search');
+  var open = parseFloat(inp.style.maxWidth) > 0;
+  if (open) { inp.style.maxWidth = '0'; inp.style.padding = '6px 0'; inp.style.opacity = '0'; }
+  else { inp.style.maxWidth = '160px'; inp.style.padding = '6px 1rem'; inp.style.opacity = '1'; setTimeout(function() { inp.focus(); }, 50); }
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.getElementById('hdr-search');
+  if (!inp) return;
+  inp.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && this.value.trim()) window.location.href = 'catalog.html?search=' + encodeURIComponent(this.value.trim());
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#hdr-search-box')) { inp.style.maxWidth = '0'; inp.style.padding = '6px 0'; inp.style.opacity = '0'; }
+  });
+});
+</script>
+</body>
+</html>
